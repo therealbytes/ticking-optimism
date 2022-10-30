@@ -50,6 +50,11 @@ library Predeploys {
     address internal constant L1_BLOCK_ATTRIBUTES = 0x4200000000000000000000000000000000000015;
 
     /**
+     * @notice Address of the Tick predeploy.
+     */
+    address internal constant TICK = 0x42000000000000000000000000000000000000A0;
+
+    /**
      * @notice Address of the GasPriceOracle predeploy. Includes fee information
      *         and helpers for computing the L1 portion of the transaction fee.
      */

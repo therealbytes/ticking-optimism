@@ -93,6 +93,9 @@ type DeployConfig struct {
 	GasPriceOracleOverhead uint64 `json:"gasPriceOracleOverhead"`
 	GasPriceOracleScalar   uint64 `json:"gasPriceOracleScalar"`
 
+	TickOwner  common.Address `json:"tickOwner"`
+	TickTarget common.Address `json:"tickTarget"`
+
 	DeploymentWaitConfirmations int `json:"deploymentWaitConfirmations"`
 
 	EIP1559Elasticity  uint64 `json:"eip1559Elasticity"`
@@ -352,6 +355,10 @@ func NewL2StorageConfig(config *DeployConfig, block *types.Block) (state.Storage
 		"batcherHash":    config.BatchSenderAddress.Hash(),
 		"l1FeeOverhead":  config.GasPriceOracleOverhead,
 		"l1FeeScalar":    config.GasPriceOracleScalar,
+	}
+	storage["Tick"] = state.StorageValues{
+		"_owner": config.TickOwner,
+		"target": config.TickTarget,
 	}
 	storage["LegacyERC20ETH"] = state.StorageValues{
 		"bridge":      predeploys.L2StandardBridge,
