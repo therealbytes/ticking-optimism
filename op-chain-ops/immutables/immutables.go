@@ -39,6 +39,9 @@ func BuildOptimism(immutable ImmutableConfig) (DeploymentResults, error) {
 			Name: "L1Block",
 		},
 		{
+			Name: "Tick",
+		},
+		{
 			Name: "L2CrossDomainMessenger",
 			Args: []interface{}{
 				immutable["L2CrossDomainMessenger"]["otherMessenger"],
@@ -113,6 +116,11 @@ func l2Deployer(backend *backends.SimulatedBackend, opts *bind.TransactOpts, dep
 	case "L1Block":
 		// No arguments required for the L1Block contract
 		_, tx, _, err = bindings.DeployL1Block(opts, backend)
+	case "Tick":
+		// The owner of the tick contract is not immutable, not required
+		// to be set here. It cannot be `address(0)`
+		owner := common.Address{1}
+		_, tx, _, err = bindings.DeployTick(opts, backend, owner)
 	case "L2CrossDomainMessenger":
 		otherMessenger, ok := deployment.Args[0].(common.Address)
 		if !ok {
