@@ -64,6 +64,20 @@ nuke: clean devnet-clean
 	git clean -Xdf
 .PHONY: nuke
 
+devnet-start:
+	@bash ./devnet-start.sh
+.PHONY: devnet-start
+
+devnet-restart: devnet-clean-state devnet-start
+.PHONY: devnet-restart
+
+devnet-clean-state:
+	rm -rf ./packages/contracts-bedrock/deployments/devnetL1
+	rm -rf ./.devnet
+	cd ./ops-bedrock && docker-compose down
+	docker volume ls --filter name=ops-bedrock --format='{{.Name}}' | xargs -r docker volume rm
+.PHONY: devnet-clean-state
+
 devnet-up:
 	@bash ./ops-bedrock/devnet-up.sh
 .PHONY: devnet-up
