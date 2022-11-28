@@ -1,3 +1,38 @@
+# Ticking chain
+
+Start a local devnet with:
+
+`make devnet-up`
+
+Set the tick target with:
+
+`cast send --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://localhost:9545 0x42000000000000000000000000000000000000A0 'setTarget(address)' <TARGET_ADDRESS>`
+
+The contract at `TARGET_ADDRESS` should implement the tick interface:
+
+```solidity
+interface ITick {
+  function tick() external;
+}
+
+```
+
+The `tick()` function in the target contract will be called at the beginning of every block after the L1 Info system transaction.
+
+Keep in mind that if `tick()` ought to only be called once per block, it should require `msg.sender` to be `0x42000000000000000000000000000000000000A0` (the tick predeploy address).
+
+**Config files of interest**
+
+- L2 block time (2s): [devnetL1.json](packages/contracts-bedrock/deploy-config/devnetL1.json)
+
+- L2 block gas limit (15M): [genesis.py](bedrock-devnet/devnet/genesis.py)
+
+- Tick system transaction gas limit (150M): [tick.go](op-node/rollup/derive/tick.go)
+
+See the fork's diff with vanilla optimism bedrock [here](https://github.com/therealbytes/ticking-optimism/compare/op-fork-point...tick-history).
+
+---
+
 <div align="center">
   <br />
   <br />
