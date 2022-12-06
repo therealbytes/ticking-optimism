@@ -21,13 +21,7 @@ The `tick()` function in the target contract will be called at the beginning of 
 
 Keep in mind that if `tick()` ought to only be called once per block, it should require `msg.sender` to be `0x42000000000000000000000000000000000000A0` (the tick predeploy address).
 
-**Config files of interest**
-
-- L2 block time (2s): [devnetL1.json](packages/contracts-bedrock/deploy-config/devnetL1.json)
-
-- L2 block gas limit (15M): [genesis.py](bedrock-devnet/devnet/genesis.py)
-
-- Tick system transaction gas limit (150M): [tick.go](op-node/rollup/derive/tick.go)
+Set block time, block gas limit, tick gas limit, and more in [devnetL1.json](packages/contracts-bedrock/deploy-config/devnetL1.json).
 
 See the fork's diff with vanilla optimism bedrock [here](https://github.com/therealbytes/ticking-optimism/compare/op-fork-point...tick-history).
 
