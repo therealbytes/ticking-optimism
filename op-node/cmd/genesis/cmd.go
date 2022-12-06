@@ -123,6 +123,9 @@ var Subcommands = cli.Commands{
 			if config.L2GenesisBlockGasLimit == 0 { // TODO: this is a hotfix, need to set default values in more clean way + sanity check the config
 				config.L2GenesisBlockGasLimit = 15_000_000
 			}
+			if config.L2GenesisTickGasLimit == 0 {
+				config.L2GenesisTickGasLimit = 150_000_000
+			}
 
 			client, err := ethclient.Dial(ctx.String("l1-rpc"))
 			if err != nil {
@@ -195,10 +198,11 @@ func makeRollupConfig(config *genesis.DeployConfig, l1StartBlock *types.Block, l
 			},
 			L2Time: l1StartBlock.Time(),
 			SystemConfig: eth.SystemConfig{
-				BatcherAddr: config.BatchSenderAddress,
-				Overhead:    eth.Bytes32(common.BigToHash(new(big.Int).SetUint64(config.GasPriceOracleOverhead))),
-				Scalar:      eth.Bytes32(common.BigToHash(new(big.Int).SetUint64(config.GasPriceOracleScalar))),
-				GasLimit:    uint64(config.L2GenesisBlockGasLimit),
+				BatcherAddr:  config.BatchSenderAddress,
+				Overhead:     eth.Bytes32(common.BigToHash(new(big.Int).SetUint64(config.GasPriceOracleOverhead))),
+				Scalar:       eth.Bytes32(common.BigToHash(new(big.Int).SetUint64(config.GasPriceOracleScalar))),
+				GasLimit:     uint64(config.L2GenesisBlockGasLimit),
+				TickGasLimit: uint64(config.L2GenesisTickGasLimit),
 			},
 		},
 		BlockTime:              config.L2BlockTime,

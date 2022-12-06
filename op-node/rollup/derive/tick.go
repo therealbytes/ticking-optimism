@@ -18,8 +18,6 @@ var (
 	TickAddress          = predeploys.TickAddr
 )
 
-var TickGasLimit uint64 = 150_000_000
-
 func MarshalBinary() ([]byte, error) {
 	data := make([]byte, 4)
 	offset := 0
@@ -28,7 +26,7 @@ func MarshalBinary() ([]byte, error) {
 }
 
 // TickDeposit creates a tick deposit transaction.
-func TickDeposit(seqNumber uint64, block eth.BlockInfo) (*types.DepositTx, error) {
+func TickDeposit(seqNumber uint64, tickGasLimit uint64, block eth.BlockInfo) (*types.DepositTx, error) {
 	data, err := MarshalBinary()
 	if err != nil {
 		return nil, err
@@ -43,15 +41,15 @@ func TickDeposit(seqNumber uint64, block eth.BlockInfo) (*types.DepositTx, error
 		To:                  &TickAddress,
 		Mint:                nil,
 		Value:               big.NewInt(0),
-		Gas:                 TickGasLimit,
+		Gas:                 tickGasLimit,
 		IsSystemTransaction: true,
 		Data:                data,
 	}, nil
 }
 
 // TickDepositBytes returns a serialized tick transaction.
-func TickDepositBytes(seqNumber uint64, Tick eth.BlockInfo) ([]byte, error) {
-	dep, err := TickDeposit(seqNumber, Tick)
+func TickDepositBytes(seqNumber uint64, tickGasLimit uint64, Tick eth.BlockInfo) ([]byte, error) {
+	dep, err := TickDeposit(seqNumber, tickGasLimit, Tick)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create L1 info tx: %w", err)
 	}

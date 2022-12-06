@@ -329,5 +329,7 @@ type SystemConfig struct {
 	Scalar Bytes32 `json:"scalar"`
 	// GasLimit identifies the L2 block gas limit
 	GasLimit uint64 `json:"gasLimit"`
+	// TickGasLimit identifies the L2 tick gas limit
+	TickGasLimit uint64 `json:"tickGasLimit"`
 	// More fields can be added for future SystemConfig versions.
 }
